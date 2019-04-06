@@ -146,9 +146,11 @@
             var wrap = document.getElementById('wrap');
             var topbar = document.getElementById('topbar');
             wrap.style.height = (window.innerHeight - topbar.offsetHeight-wrap.offsetTop) + "px";
+            wrap.style.width = (window.innerWidth - wrap.offsetLeft*2) + "px";
             link();
 
         })()
+        
         
         function link() {
             ws = new WebSocket("ws://127.0.0.1:8588/ws");//连接服务器
