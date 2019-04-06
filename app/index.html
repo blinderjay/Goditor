@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Goditor</title>
+    <!-- <script src="/res/js/showdown.min.js" type="text/javascript"></script> -->
+    <!-- <script src="js/showdown.min.js"></script> -->
+</head>
+<style>
+    @font-face {
+        font-family: 'menlo';
+        src: url('./font/Menlo/Menlo Bold for Powerline.ttf');
+    }
+
+    @font-face {
+        font-family: 'pingfang';
+        src: url('./font/pingfangziti/苹方黑体-准-简.ttf');
+    }
+
+    body {
+        text-align: end;
+        background-image: url('./image/starsky.jpg');
+        
+        padding: 0;
+    }
+
+    .wrap {
+        width: 1190px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    #left {
+        width: 595px;
+        height: 890px;
+        background: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #right {
+        width: 595px;
+        height: 890px;
+        background: #f3af6179;
+        color: aliceblue;
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: left;
+        font-style: bold;
+    }
+
+    #input {
+        color: rgb(77, 255, 77);
+        background-color: rgba(56, 56, 55, 0.671);
+        font-family: 'menlo'，'pingfang';
+        font-size: 15px;
+        font-style: bold;
+        text-shadow: slategrey 1px;
+        padding-top: 16px;
+        line-height: 20px;
+        height: 866px; 
+        width: 580px;
+    }
+
+    #preview {
+        font-family: 'pingfang','menlo';
+        font-size: 15px;
+        text-shadow: rgb(176, 177, 179) 1px;
+        word-wrap: break-word;
+    }
+
+    .twrap {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 6px;
+    }
+</style>
+
+<body>
+
+    <!-- <div>
+        <button onclick="link()">connect</button>
+        <button onclick="sendMsg()">reload</button>
+    </div> -->
+    <div class="wrap">
+        <div id="left">
+            <textarea class="twrap" name="input" id="input"  oninput="sendMsg()"></textarea>
+        </div>
+        <div id="right">
+            <div id="preview" class="twrap">Here is the preview of your markdown file</div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        var ws;
+        (function link() {
+            ws = new WebSocket("ws://127.0.0.1:8588/ws");//连接服务器
+            ws.onopen = function (event) {
+                // alert('connected');
+
+            };
+            ws.onmessage = function (event) {
+                document.getElementById('preview').innerHTML = event.data
+            }
+            ws.onclose = function (event) {
+                // alert("disconnected" + this.readyState);
+            };
+            ws.onerror = function (event) {
+                // alert("websocket err");
+            };
+        })()
+
+        function sendMsg() {
+            var msg = document.getElementById('input').value;
+            ws.send(msg);
+        }
+        function reload() {
+            window.URL.reload()
+        }
+
+    </script>
+</body>
+
+</html>

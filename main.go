@@ -9,7 +9,10 @@ import (
 
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 
+	_ "github.com/blinderjay/Goditor/statik"
 	"github.com/gorilla/websocket"
+	"github.com/rakyll/statik/fs"
+	"github.com/zserge/webview"
 )
 
 var (
@@ -23,8 +26,9 @@ var (
 			return true
 		},
 	}
-	dir                       string     // the path of the execute file
-	windowWidth, windowHeight = 800, 600 // set the window
+	dir                       string      // the path of the execute file
+	windowWidth, windowHeight = 1200, 900 // set the window
+	statikFS                  http.FileSystem
 )
 
 type mdTranser struct {
@@ -35,6 +39,10 @@ type mdTranser struct {
 
 func init() {
 	var err error
+	statikFS, err = fs.New()
+	if err != nil {
+		log.Fatal(err)
+	}
 	dir, err = filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
@@ -42,9 +50,22 @@ func init() {
 }
 func main() {
 	prefixChannel := make(chan string)
-	webServ(prefixChannel)
-	// prefix := <-prefixChannel
-	// create a web view
+	go webServ(prefixChannel)
+	prefix := <-prefixChannel
+
+	// create a webview
+
+	wstting := webview.Settings{
+		Title: "Goditor",
+		// URL:       `data:text/html,` + url.PathEscape(),
+		URL:       prefix + "/res/index.html",
+		Width:     windowWidth,
+		Height:    windowHeight,
+		Resizable: false,
+	} // the first way to create a window
+	w := webview.New(wstting)
+	w.Run()
+
 	// err := webview.Open(
 	// 	"Goditor",
 	// 	prefix+"/res/index.html",
@@ -53,13 +74,14 @@ func main() {
 	// 	false)
 	// if err != nil {
 	// 	log.Fatal(err)
-	// }
-	// log.Printf(prefix)
+	// }	// another way to create a window
+	log.Printf(prefix)
 }
 
 func webServ(prefixChannel chan string) {
 	mux := http.NewServeMux()
-	mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.Dir(dir+"/app/res"))))
+	// mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.Dir(dir+"/app/res"))))
+	mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(statikFS)))
 	mux.HandleFunc("/ws", wsServ)
 
 	listener, err := net.Listen("tcp", "127.0.0.1:8588")
@@ -137,3 +159,20 @@ func (md *mdTranser) sentPreview() {
 		}
 	}
 }
+
+const myIndex = `
+<html lang="en">
+</head>
+<body>
+    <div>
+        <button onclick="link()">connect</button>
+        <!-- <button onclick="sendMsg()">reload</button> -->
+    </div>
+    <div>
+        <textarea name="input" id="input" cols="30" rows="10" oninput="sendMsg()"></textarea>
+        <p id="preview"></p>
+    </div>
+    <script>
+</body>
+</html>
+`
