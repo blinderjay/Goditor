@@ -27,7 +27,7 @@ var (
 		},
 	}
 	dir                       string      // the path of the execute file
-	windowWidth, windowHeight = 1200, 900 // set the window
+	windowWidth, windowHeight = 1600, 900 // set the window
 	statikFS                  http.FileSystem
 )
 
