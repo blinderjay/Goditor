@@ -111,10 +111,12 @@ glfw框架
 
 感谢下面这些项目的支持，他们在**Goditor**中都起到了不可或缺的作用
 
-- russross/blackfriday：gomarkdown/markdown的fork源，提供了markdown最核心的功能，是golang中对markdown支持最好的一个
-- gomarkdown/markdown：fork自russross/blackfriday，提供了go语言对markdown的解析和一些功能的扩展
-- gorilla/websocket：提供前后端通信的支持
-- rakyll/statik：对静态资源打包，使goditor更像一个本地应用而非浏览器
-- zserge/webview：打开不同平台的默认浏览器渲染引擎，对golang提供操控窗口的接口
-- flowchart.min.js：提供流程图的绘制
-- fontawesome：一些图标的显示
+- [russross/blackfriday](https://github.com/russross/blackfriday)：gomarkdown/markdown的fork源，提供了markdown最核心的功能，是golang中对markdown支持最好的一个
+- [omarkdown/markdown](https://github.com/gomarkdown/markdown)：fork自russross/blackfriday，提供了go语言对markdown的解析和一些功能的扩展
+- [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)：提供markdown的html显示
+- [gorilla/websocket](https://github.com/gorilla/websocket#gorilla-websocket-compared-with-other-packages)：提供前后端通信的支持
+- [rakyll/statik](https://github.com/rakyll/statik)：对静态资源打包，使goditor更像一个本地应用而非浏览器
+- [zserge/webview](https://github.com/zserge/webview)：打开不同平台的默认浏览器渲染引擎，对golang提供操控窗口的接口
+- [flowchart.min.js](https://github.com/adrai/flowchart.js)：提供流程图的绘制
+- [fontawesome](https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself)：一些图标的显示
+- [editor.md](https://github.com/pandao/editor.md)：一份成功的参考，不过很多地方我不是很喜欢

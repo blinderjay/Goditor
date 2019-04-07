@@ -76,8 +76,13 @@ func main() {
 }
 func webServ(prefixChannel chan string) {
 	mux := http.NewServeMux()
-	// mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.Dir(dir+"/app/res"))))
-	mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(statikFS)))
+
+	/*
+		one is used for test front end when all the static file was put in the local;
+		while another one embbed all file into go , which is used for final deploy
+	*/
+	mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.Dir(dir+"/app"))))
+	// mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(statikFS)))
 	mux.HandleFunc("/ws", wsServ)
 	listener, err := net.Listen("tcp", "127.0.0.1:8588")
 	if err != nil {
@@ -157,20 +162,3 @@ func (md *mdTranser) sentPreview() {
 		}
 	}
 }
-
-const myIndex = `
-<html lang="en">
-</head>
-<body>
-    <div>
-        <button onclick="link()">connect</button>
-        <!-- <button onclick="sendMsg()">reload</button> -->
-    </div>
-    <div>
-        <textarea name="input" id="input" cols="30" rows="10" oninput="sendMsg()"></textarea>
-        <p id="preview"></p>
-    </div>
-    <script>
-</body>
-</html>
-`
