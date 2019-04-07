@@ -36,55 +36,77 @@
         height: 90% */
             /* margin: 0 auto; */
             position: relative;
+            background: transparent;
             top: 10px;
             /* left: 10px; */
             /* right: 10px; */
             /* bottom: 10px; */
             text-align: left;
-            border-radius: 0.75em;
-            overflow: hidden;
+            /* border-radius: 0.75em; */
+            overflow: visible;
+        
         }
+
         #topbar {
             position: relative;
             height: 1.5em;
             border-radius: 0.5em;
+            background-color: azure;
         }
 
         #left {
             width: 50%;
             height: 100%;
-            background: rgba(255, 0, 0, 0.322);
+            background: rgba(124, 59, 59, 0.658);
             position: absolute;
+            padding: 0;
+            border: 0;
             top: 0;
             left: 0;
+            box-shadow:-1px 2px 25px snow;
+            text-align: left;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            border-radius: 0.75em 0 0 0.75em;
         }
 
         #right {
             width: 50%;
             height: 100%;
-            background: #ffe9d1e0;
+            /* background: #ffe9d1e0;
+             */
+            background: rgba(245, 245, 245, 0.719);
             position: absolute;
+            padding: 0;
+            border: 0;
             top: 0;
             right: 0;
+            box-shadow:1px 2px 16px rgb(250, 187, 27);
+            overflow-y: scroll;
+            overflow-x: hidden;
+            border-radius: 0 0.75em  0.75em 0;
         }
 
         #input {
             color: rgb(77, 255, 77);
-            background-color: rgba(56, 56, 55, 0.671);
+            background-color: rgba(63, 63, 63, 0);
             border-width: 0;
-            /* font-family: 'menlo'，'pingfang'; */
+            border-color: transparent;
+            font-family: 'menlo'，'pingfang';
             font-size: 15px;
             font-style: bold;
             text-shadow: slategrey 1px;
+            position: relative;
             padding: 8px;
             padding-top: 14px;
             line-height: 20px;
             height: 100%;
-            width: 100%;
+            width: 97%;
+            overflow: hidden;
         }
 
         #preview {
-            /* font-family: 'pingfang', 'menlo'; */
+            font-family: 'pingfang', 'menlo';
             font-style: bold;
             font-size: 15px;
             text-shadow: rgb(176, 177, 179) 1px;
@@ -106,16 +128,16 @@
 
 <body>
     <div id="topbar" style="background:white">
-        <i class="fas fa-user"></i> <!-- uses solid style -->
+        <i class="fas fa-user"></i>
         <span>develop by blinderjay</span>
-        <i class="far fa-user"></i> <!-- uses regular style -->
+        <i class="far fa-user"></i>
         <i class="fab fa-github"></i>
         <span>supported by: </span><a href="http://github.com/blinderjay/Goditor">Goditor</a>
-        <i class="fab fa-github-square"></i> <!-- uses brands style -->
+        <i class="fab fa-github-square"></i>
     </div>
     <div id="wrap">
         <div id="left">
-            <textarea class="twrap" name="input" id="input" oninput="sendMsg()"></textarea>
+            <textarea wrap="hard" class="twrap" name="input" id="input" oninput="sendMsg()"></textarea>
         </div>
         <div id="right">
             <article name="input" id="preview" class="markdown-body twrap">
@@ -126,32 +148,44 @@
     <script>
         var ws;
         var wrap = document.getElementById('wrap');
+        var input = document.getElementById('input');
+        var left = document.getElementById('left');
+        var right = document.getElementById('right');
         var topbar = document.getElementById('topbar');
+        var preview = document.getElementById('preview');
+        var scale = (input.offsetHeight - left.offsetHeight) / (preview.offsetHeight - right.offsetHeight);
+        var currentTab = 0;
+
         (function init() {
             if (!document.welcome) {
                 var welcome = "hellow"
             }
-            document.getElementById('input').value = welcome;
+            input.value = welcome;
+            // input.style.width = left.clientWidth;
             wrap.style.height = (document.body.scrollHeight - topbar.offsetHeight - wrap.offsetTop) + "px";
             wrap.style.width = (window.width - wrap.offsetLeft * 2) + "px";
             link();
         })()
+
+
+
+        left.addEventListener('scroll', function () {
+            right.scrollTop = left.scroll.offsetTop;
+        })
         window.onresize = function (ev) {
+            scale = (input.offsetHeight - left.offsetHeight) / (preview.offsetHeight - right.offsetHeight)
             wrap.style.height = (document.documentElement.clientHeight - topbar.offsetHeight - wrap.offsetTop) + "px";
         }
         function link() {
             ws = new WebSocket("ws://127.0.0.1:8588/ws");//连接服务器
             ws.onopen = function (event) {
-                // alert('connected');
             };
             ws.onmessage = function (event) {
                 document.getElementById('preview').innerHTML = event.data
             }
             ws.onclose = function (event) {
-                // alert("disconnected" + this.readyState);
             };
             ws.onerror = function (event) {
-                // alert("websocket err");
             };
         }
         function sendMsg() {
@@ -170,6 +204,23 @@
                 return getComputedStyle(obj, false)[attr];
             };
         }
+
+        left.addEventListener('scroll', () => {
+            if (currentTab !== 1) return
+            right.scrollTop = left.scrollTop * scale
+        })
+        right.addEventListener('scroll', () => {
+            if (currentTab !== 2) return
+            left.scrollTop = right.scrollTop / scale
+        })
+
+        left.addEventListener('mouseover', () => {
+            currentTab = 1
+        })
+        right.addEventListener('mouseover', () => {
+            // 2 表示表示当前鼠标位于 .right元素范围内
+            currentTab = 2
+        })
     </script>
 </body>
 
