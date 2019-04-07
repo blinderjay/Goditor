@@ -3,130 +3,118 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <title>Goditor</title>
     <link rel="stylesheet" href="/res/css/github-markdown.css">
     <script src="/res/js/flowchart.min.js"></script>
     <script src="/res/js/all.js"></script>
     <script src="/res/js/init.js"></script>
-
     <!-- <script src="/res/js/showdown.min.js" type="text/javascript"></script> -->
     <!-- <script src="js/showdown.min.js"></script> -->
+    <style>
+        /* @font-face {
+            font-family: 'menlo';
+            src: url('./font/Menlo/Menlo Bold for Powerline.ttf');
+        }
+        @font-face {
+            font-family: 'pingfang';
+            src: url('./font/pingfangziti/苹方黑体-准-简.ttf');
+        } */
+        body {
+            /* width: 1580px;
+            height: 950; */
+            text-align: center;
+            background-image: url('./image/starsky.jpg');
+            position: relative;
+            /* background-repeat: no-repeat; */
+            /* background-size: stretch; */
+        }
 
-<style>
-    @font-face {
-        font-family: 'menlo';
-        src: url('./font/Menlo/Menlo Bold for Powerline.ttf');
-    }
-
-    @font-face {
-        font-family: 'pingfang';
-        src: url('./font/pingfangziti/苹方黑体-准-简.ttf');
-    }
-
-    body {
-        width: 1582px;
-        height: 950;
-        text-align: center;
-        background-image: url('./image/starsky.jpg');
-        position: relative;
-        /* background-repeat: no-repeat; */
-        /* background-size: stretch; */
-    }
-
-    #wrap {
-        /* width: 95%;
+        #wrap {
+            /* width: 95%;
         height: 90% */
-        /* margin: 0 auto; */
-        position: relative;
-        top: 15px;
-        width: 100%;
-        text-align: left;
-        border-radius: 0.75em;
-        overflow: hidden;
-    }
+            /* margin: 0 auto; */
+            position: relative;
+            top: 10px;
+            /* left: 10px; */
+            /* right: 10px; */
+            /* bottom: 10px; */
+            text-align: left;
+            border-radius: 0.75em;
+            overflow: hidden;
+        }
+        #topbar {
+            position: relative;
+            height: 1.5em;
+            border-radius: 0.5em;
+        }
 
-    #topbar {
-        position: relative;
-        height: 1.5em;
-        border-radius: 0.5em;
-    }
+        #left {
+            width: 50%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.322);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    #left {
-        width: 50%;
-        height: 100%;
-        background: rgba(255, 0, 0, 0.322);
-        position: absolute;
-        top: 0;
-        left: 0;
+        #right {
+            width: 50%;
+            height: 100%;
+            background: #ffe9d1e0;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
 
-    }
+        #input {
+            color: rgb(77, 255, 77);
+            background-color: rgba(56, 56, 55, 0.671);
+            border-width: 0;
+            /* font-family: 'menlo'，'pingfang'; */
+            font-size: 15px;
+            font-style: bold;
+            text-shadow: slategrey 1px;
+            padding: 8px;
+            padding-top: 14px;
+            line-height: 20px;
+            height: 100%;
+            width: 100%;
+        }
 
-    #right {
-        width: 50%;
-        height: 100%;
-        background: #ffe9d1e0;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
+        #preview {
+            /* font-family: 'pingfang', 'menlo'; */
+            font-style: bold;
+            font-size: 15px;
+            text-shadow: rgb(176, 177, 179) 1px;
+            word-wrap: break-word;
+            height: 100%;
+            width: 100%;
+        }
 
-    #input {
-        color: rgb(77, 255, 77);
-        background-color: rgba(56, 56, 55, 0.671);
-        border-width: 0;
-        font-family: 'menlo'，'pingfang';
-        font-size: 15px;
-        font-style: bold;
-        text-shadow: slategrey 1px;
-        padding: 8px;
-        padding-top: 14px;
-        line-height: 20px;
-        height: 100%;
-        width: 100%;
-    }
-
-    #preview {
-        font-family: 'pingfang', 'menlo';
-        font-size: 15px;
-        text-shadow: rgb(176, 177, 179) 1px;
-        word-wrap: break-word;
-        height: 100%;
-        width: 100%;
-    }
-
-    .twrap {
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 6px;
-    }
-</style>
-
-
-
-
+        .twrap {
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 6px;
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- <div>
-        <button onclick="link()">connect</button>
-        <button onclick="sendMsg()">reload</button>
-    </div> -->
     <div id="topbar" style="background:white">
         <i class="fas fa-user"></i> <!-- uses solid style -->
+        <span>develop by blinderjay</span>
         <i class="far fa-user"></i> <!-- uses regular style -->
-        <i class="fal fa-user"></i> <!-- uses light style -->
-        <!--brand icon-->
+        <i class="fab fa-github"></i>
+        <span>supported by: </span><a href="http://github.com/blinderjay/Goditor">Goditor</a>
         <i class="fab fa-github-square"></i> <!-- uses brands style -->
     </div>
     <div id="wrap">
         <div id="left">
-
             <textarea class="twrap" name="input" id="input" oninput="sendMsg()"></textarea>
         </div>
         <div id="right">
@@ -135,28 +123,26 @@
             </article>
         </div>
     </div>
-
-
-
     <script>
         var ws;
+        var wrap = document.getElementById('wrap');
+        var topbar = document.getElementById('topbar');
         (function init() {
-            var welcome;
+            if (!document.welcome) {
+                var welcome = "hellow"
+            }
             document.getElementById('input').value = welcome;
-            var wrap = document.getElementById('wrap');
-            var topbar = document.getElementById('topbar');
-            wrap.style.height = (window.innerHeight - topbar.offsetHeight-wrap.offsetTop) + "px";
-            wrap.style.width = (window.innerWidth - wrap.offsetLeft*2) + "px";
+            wrap.style.height = (document.body.scrollHeight - topbar.offsetHeight - wrap.offsetTop) + "px";
+            wrap.style.width = (window.width - wrap.offsetLeft * 2) + "px";
             link();
-
         })()
-        
-        
+        window.onresize = function (ev) {
+            wrap.style.height = (document.documentElement.clientHeight - topbar.offsetHeight - wrap.offsetTop) + "px";
+        }
         function link() {
             ws = new WebSocket("ws://127.0.0.1:8588/ws");//连接服务器
             ws.onopen = function (event) {
                 // alert('connected');
-
             };
             ws.onmessage = function (event) {
                 document.getElementById('preview').innerHTML = event.data
@@ -168,7 +154,6 @@
                 // alert("websocket err");
             };
         }
-
         function sendMsg() {
             var msg = document.getElementById('input').value;
             ws.send(msg);
@@ -176,9 +161,7 @@
         function reload() {
             window.URL.reload()
         }
-
         function getStyle(obj, attr) {
-
             if (obj.currentStyle) {
                 //ie浏览器
                 return obj.currentStyle[attr];
@@ -187,8 +170,6 @@
                 return getComputedStyle(obj, false)[attr];
             };
         }
-        
-
     </script>
 </body>
 

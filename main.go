@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	blackfriday "gopkg.in/russross/blackfriday.v2"
-
 	_ "github.com/blinderjay/Goditor/statik"
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/parser"
 	"github.com/gorilla/websocket"
 	"github.com/rakyll/statik/fs"
 	"github.com/zserge/webview"
@@ -52,20 +52,17 @@ func main() {
 	prefixChannel := make(chan string)
 	go webServ(prefixChannel)
 	prefix := <-prefixChannel
-
 	// create a webview
-
 	wstting := webview.Settings{
 		Title: "Goditor",
 		// URL:       `data:text/html,` + url.PathEscape(),
 		URL:       prefix + "/res/index.html",
 		Width:     windowWidth,
 		Height:    windowHeight,
-		Resizable: false,
+		Resizable: true,
 	} // the first way to create a window
 	w := webview.New(wstting)
 	w.Run()
-
 	// err := webview.Open(
 	// 	"Goditor",
 	// 	prefix+"/res/index.html",
@@ -77,13 +74,11 @@ func main() {
 	// }	// another way to create a window
 	log.Printf(prefix)
 }
-
 func webServ(prefixChannel chan string) {
 	mux := http.NewServeMux()
 	// mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.Dir(dir+"/app/res"))))
 	mux.Handle("/res/", http.StripPrefix("/res/", http.FileServer(statikFS)))
 	mux.HandleFunc("/ws", wsServ)
-
 	listener, err := net.Listen("tcp", "127.0.0.1:8588")
 	if err != nil {
 		log.Panic(err)
@@ -91,21 +86,18 @@ func webServ(prefixChannel chan string) {
 	portAddress := listener.Addr().String()
 	listener.Close()
 	prefixChannel <- "http://" + portAddress
-
 	server := &http.Server{
 		Addr:    portAddress,
 		Handler: mux,
 	}
 	server.ListenAndServe()
 }
-
 func wsServ(w http.ResponseWriter, r *http.Request) {
 	log.Printf("recerive a websocket connection\n")
 	var (
 		conn *websocket.Conn
 		err  error
 	)
-
 	// 完成http应答，在httpheader中放下如下参数
 	// Upgrade:websocket
 	if conn, err = upgrader.Upgrade(w, r, nil); err != nil {
@@ -116,23 +108,31 @@ func wsServ(w http.ResponseWriter, r *http.Request) {
 		writechn: make(chan []byte, 409600),
 		sock:     conn,
 	}
-
 	// 启动转换进程
-
 	go md.getMarkdown()
 	go md.sentPreview()
-
 	go func() {
 		var mdText []byte
 		for {
 			select {
 			case mdText = <-md.readchn:
-				md.writechn <- blackfriday.Run(mdText)
+				extensions := parser.CommonExtensions |
+					parser.MathJax |
+					parser.HardLineBreak |
+					parser.FencedCode |
+					parser.Tables |
+					parser.Footnotes |
+					parser.Autolink |
+					parser.DefinitionLists |
+					parser.SuperSubscript |
+					parser.Mmark
+				parser := parser.NewWithExtensions(extensions)
+				md.writechn <- markdown.ToHTML(mdText, parser, nil)
+				// md.writechn <- blackfriday.Run(mdText)
 			}
 		}
 	}()
 }
-
 func (md *mdTranser) getMarkdown() {
 	defer md.sock.Close()
 	for {
@@ -144,10 +144,8 @@ func (md *mdTranser) getMarkdown() {
 		md.readchn <- mdtext
 	}
 }
-
 func (md *mdTranser) sentPreview() {
 	defer md.sock.Close()
-
 	var mdpre []byte
 	for {
 		select {

@@ -2,7 +2,18 @@
 
 # Goditor
 
-A notebook and markdown editor written with go
+> - A notebook and markdown editor written with go
+> - markdown编辑器的go语言实现
+
+
+## 安装
+
+- 下载：`go get -u github.com/blinderjay/Goditor`
+- 运行：确保添加了go的环境变量`Goditor`
+
+> 对开发者：如果您修改了app文件夹下的任何文件，必须先重新将app文件夹打包成为一个staik包，为了方便，您可以直接运行脚本
+> - 进入安装目录：`cd $GOPATH/src/github.com/blinderjay/Goditor/buildscript`
+> - 然后执行脚本：`./build.sh`或`./build.bat`
 
 ## 目标
 
@@ -93,3 +104,15 @@ glfw框架
 
 ### websocket
 
+
+## 感谢
+
+感谢下面这些项目的支持，他们在**Goditor**中都起到了不可或缺的作用
+
+- russross/blackfriday：gomarkdown/markdown的fork源，提供了markdown最核心的功能，是golang中对markdown支持最好的一个
+- gomarkdown/markdown：fork自russross/blackfriday，提供了go语言对markdown的解析和一些功能的扩展
+- gorilla/websocket：提供前后端通信的支持
+- rakyll/statik：对静态资源打包，使goditor更像一个本地应用而非浏览器
+- zserge/webview：打开不同平台的默认浏览器渲染引擎，对golang提供操控窗口的接口
+- flowchart.min.js：提供流程图的绘制
+- fontawesome：一些图标的显示
