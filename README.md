@@ -7,7 +7,9 @@
 
 
 ## 安装
-
+- 一些依赖：
+  - windows:在win下面打开的是IE的渲染引擎，如果IE被取消使用的话需要重新启用
+  - linux:默认使用的webviewgtk+,在fedora/centos下需要安装这些依赖项，其他发行版类似：`webkit2gtk3-devel、mesa-utils、libgl1-mesa-glx、glibc-devel`
 - 下载：`go get -u github.com/blinderjay/Goditor`
 - 运行：确保添加了go的环境变量`Goditor`
 
